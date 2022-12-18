@@ -62,3 +62,34 @@ for file in onlyfiles:
             tokenized_text = word_tokenize(dict['content'])
 
             stop_words = set(stopwords.words("english"))
+            
+            # FILTERING THE DATA IN JSON FILES
+            for i in tokenized_text:
+                if i not in stop_words:
+                    if i.isalpha():
+                        if i not in unwords:
+                            stems.append(stemmer.stem(i))
+
+     # stems.sort()
+     stems = list(dict.fromkeys(stems))
+
+     
+     for i in stems:
+          if i in mydict2:
+               mydict2[i].append(documentID[filecounter-1])
+          else:
+               mydict2.update({i : [documentID[filecounter-1]]})
+
+
+
+
+     #  UPDATING THE DICTIONARY
+     mydict.update({documentID[filecounter-1] : stems})
+     file.close()
+
+# WRITING THE DICTIONARIES TO THE JSON FILES
+with open("sample.json", "w") as outfile:
+    json.dump(mydict, outfile)
+
+with open("sample2.json", "w") as outfile:
+    json.dump(mydict2, outfile)
